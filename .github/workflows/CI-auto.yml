@@ -9,18 +9,47 @@ on:
     branches:
       - develop
 jobs:
-  install_dependencies:
-    runs-on: ubuntu-latest
+  image-build:
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
-      - name: list Directory
-        working-directory: scripts 
-        run: ls
-      
-      - name: Install dependencies
-        working-directory: scripts 
+      - name: Installing-dependency
+        working-directory: "devops/dependency-install"
         run: |
-            chmod +x dependency-install.sh
-            ./dependency-install.sh
+            chmod +x install.sh
+            ./install.sh
+      - name: build-image
+        working-directory: "devops/frontend" 
+        run: |
+            docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:stablelatest \
+                -t ${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD) \
+                    -f "../../source-code/frontend/"
+  list_and_scan_images:
+    runs-on: self-hosted
+      needs: [image-build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: List Docker images
+        run: |
+          docker images
+      - name: scan images
+        run : |
+            trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)
+  push_images:
+    runs-on: self-hosted
+    needs: [list_and_scan_images]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        run: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Pushing images
+        run : |
+            - name: Push Database Docker images
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)
+
