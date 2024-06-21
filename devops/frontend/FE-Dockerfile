@@ -13,7 +13,6 @@ WORKDIR /frontend
 # Copy only the built assets and necessary files from the previous stage
 COPY --from=build /frontend/package.json \
     /frontend/yarn.lock \
-    /frontend/.env \
     /frontend/public ./ 
 
 EXPOSE 5173
