@@ -22,8 +22,12 @@ git add .
 git commit -m "commit message"
 git push origin develop
 ```
+![alt text](screenshots/template-image/T1-0-adding-pushing-code.png)
+```
 
-Verify pipeline status:
+```
+
+**Verify pipeline status**:
 ![alt text](screenshots/template-image/T1-1.0-viewing-pipeline.png)
 
 
