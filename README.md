@@ -27,9 +27,15 @@ git push origin develop
 
 ```
 
-**Verify pipeline status**:
+**Verify CI (continuous-Integration) pipeline status**:
 ![alt text](screenshots/template-image/T1-1.0-viewing-pipeline.png)
+```
 
+```
+
+**Verify CI ((continuous-Deployment) pipeline status**:
+
+![alt text](screenshots/template-image/T1-1.1-viewing-deploy-pipeline.png)
 
 
 
