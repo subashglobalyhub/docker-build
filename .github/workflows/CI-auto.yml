@@ -1,4 +1,4 @@
-name: Building-Images
+name: CI-build-and-push-images
 
 on:
   push:

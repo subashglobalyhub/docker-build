@@ -1,9 +1,9 @@
 # Simple workflow for reference
-name: Deploy container
+name: CD-Deploy-container
 
 on: 
   workflow_run:
-    workflows: ['list_and_scan_images']
+    workflows: ['CI-build-and-push-images']
     types:
       - completed
   push:
