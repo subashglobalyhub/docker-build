@@ -1,18 +1,14 @@
-version: '3'
+version: '3.8'
 
 services:
   frontend:
-    image: subash729/frontend-v2:latest 
+    image: subash729/frontend-v2:latest
     container_name: Frontend
     ports:
       - "5173:5173"
     networks:
-      bridge-subas:
+      - bridge-frontend
 
 networks:
   bridge-frontend:
     driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.30.0.0/24
