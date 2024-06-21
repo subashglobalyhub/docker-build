@@ -1,20 +1,20 @@
-FROM node:20-alpine
+# Stage 1: Build Stage
+FROM node:20-alpine as build
+WORKDIR /frontend
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+COPY . .
+RUN yarn build
 
-# Set the working directory
+# Stage 2: Production Stage
+FROM node:20-alpine
 WORKDIR /frontend
 
-# Copy package.json and package-lock.json
-COPY package*.json /frontend/
-COPY yarn.lock /frontend/
+# Copy only the built assets and necessary files from the previous stage
+COPY --from=build /frontend/package.json \
+    /frontend/yarn.lock \
+    /frontend/.env \
+    /frontend/public ./ 
 
-# Install dependencies
-RUN yarn install
-
-# Copy the rest of the application
-COPY . /frontend
-
-# Expose the backend port
 EXPOSE 5173
-
-# Command to run the backend
-CMD [ "yarn", "dev" ]
+CMD ["yarn", "start"]

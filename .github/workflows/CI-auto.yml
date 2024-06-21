@@ -59,9 +59,8 @@ jobs:
         run: |
           SCAN_RESULT_FILE="./frontend_scan-$(git rev-parse HEAD)-$(date +'%Y-%m-%d_%H-%M').txt"
           trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/frontend-v2:$(git rev-parse --short HEAD) >> $SCAN_RESULT_FILE
-          echo "Uploading scan artifact..."
       - name: Upload scan artifact
         uses: actions/upload-artifact@v2
         with:
           name: frontend-scan-results
-          path: $SCAN_RESULT_FILE
+          path: ./$SCAN_RESULT_FILE
