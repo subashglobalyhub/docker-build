@@ -14,7 +14,7 @@ COPY yarn.lock /frontend/
 RUN yarn install
 
 # Copy the rest of the application
-COPY . .
+COPY ../../source-code/frontend/ .
 
 # Expose the backend port
 EXPOSE 5173
