@@ -23,10 +23,11 @@ jobs:
         working-directory: "devops"
         run: |
             ls -al
-            mkdir -p ~/docker-compose/
-            cp . ~/docker-compose/
+            docker-dir="~/docker-compose/"
+            mkdir -p $docker-dir
+            cp docker-compose.yml $docker-dir
       
       - name: deploying-comtainer
         run: |
-            cd ~/docker-compose/
+            cd $docker-dir
             docker compose up -d
