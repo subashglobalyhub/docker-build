@@ -1,4 +1,4 @@
-name: Deploy static content to Pages
+name: Building-Images
 
 on:
   push:
@@ -42,6 +42,9 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend-v2:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend-v2:$(git rev-parse --short HEAD)
+      - name: Logout Docker
+        run: |
+          docker logout
 
   list_and_scan_images:
     runs-on: self-hosted
@@ -52,9 +55,13 @@ jobs:
       - name: List Docker images
         run: |
           docker images
-      - name: Scan images
+      - name: Scan images and upload artifact
         run: |
-          trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/frontend-v2:$(git rev-parse --short HEAD) >> ./frontend_scan-$(git rev-parse HEAD)-$(date +'%Y-%m-%d_%H-%M').txt
-      - name: Logout Docker
-        run: |
-          docker logout
+          SCAN_RESULT_FILE="./frontend_scan-$(git rev-parse HEAD)-$(date +'%Y-%m-%d_%H-%M').txt"
+          trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/frontend-v2:$(git rev-parse --short HEAD) >> $SCAN_RESULT_FILE
+          echo "Uploading scan artifact..."
+      - name: Upload scan artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend-scan-results
+          path: $SCAN_RESULT_FILE
