@@ -14,4 +14,4 @@ WORKDIR /frontend
 COPY --from=build /frontend/package.json /frontend/yarn.lock /frontend/public/ ./
 
 EXPOSE 5173
-CMD ["yarn", "start"]
+CMD ["yarn", "dev"]
