@@ -28,7 +28,7 @@ jobs:
                     
   push_images:
     runs-on: self-hosted
-    needs: [list_and_scan_images]
+    needs: [image-build]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
