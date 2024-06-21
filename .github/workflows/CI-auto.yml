@@ -35,9 +35,7 @@ jobs:
       - name: Login to Docker Hub
         run: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - name: Pushing images
-        run : |
-            - name: Push Database Docker images
+      - name: Push Database Docker images
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/FE-V2-newlatest
           docker push ${{ secrets.DOCKER_USERNAME }}/FE-V2-new$(git rev-parse --short HEAD)
