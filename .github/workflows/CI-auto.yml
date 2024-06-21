@@ -22,8 +22,8 @@ jobs:
         working-directory: "devops/frontend" 
         run: |
             docker build -f FE-Dockerfile \
-                -t ${{ secrets.DOCKER_USERNAME }}/FE-V2-newstablelatest \
-                  -t ${{ secrets.DOCKER_USERNAME }}/FE-V2-new$(git rev-parse --short HEAD) \
+                -t ${{ secrets.DOCKER_USERNAME }}/FE-V2-new:stablelatest \
+                  -t ${{ secrets.DOCKER_USERNAME }}/FE-V2-new:$(git rev-parse --short HEAD) \
                       ../../source-code/frontend/
                     
   push_images:
@@ -37,8 +37,8 @@ jobs:
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Push Database Docker images
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/FE-V2-newlatest
-          docker push ${{ secrets.DOCKER_USERNAME }}/FE-V2-new$(git rev-parse --short HEAD)
+          docker push ${{ secrets.DOCKER_USERNAME }}/FE-V2-new:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/FE-V2-new:$(git rev-parse --short HEAD)
           ls -al
 
   list_and_scan_images:
@@ -52,6 +52,6 @@ jobs:
           docker images
       - name: scan images
         run : |
-            trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/FE-V2-new$(git rev-parse --short HEAD) >> ./frontend_scan-$(git rev-parse HEAD)-$(date +'%Y-%m-%d_%H-%M').txt
+            trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/FE-V2-new:$(git rev-parse --short HEAD) >> ./frontend_scan-$(git rev-parse HEAD)-$(date +'%Y-%m-%d_%H-%M').txt
 
 
