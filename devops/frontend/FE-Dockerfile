@@ -6,15 +6,14 @@ FROM node:20-alpine
 WORKDIR /frontend
 
 # Copy package.json and package-lock.json
-COPY package*.json /frontend/
-COPY yarn.lock /frontend/
-
+COPY ../../source-code/frontend/package*.json /frontend/
+COPY ../../source-code/frontend/yarn.lock /frontend/
 
 # Install dependencies
 RUN yarn install
 
 # Copy the rest of the application
-COPY ../../source-code/frontend/ .
+COPY ../../source-code/frontend/ /frontend/
 
 # Expose the backend port
 EXPOSE 5173

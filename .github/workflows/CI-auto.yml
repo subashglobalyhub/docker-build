@@ -1,4 +1,3 @@
-# Simple workflow for reference
 name: Deploy static content to Pages
 
 on:
@@ -22,21 +21,11 @@ jobs:
       - name: build-image
         working-directory: "devops/frontend" 
         run: |
-            docker build -t ${{ secrets.DOCKER_USERNAME }}/frontend:stablelatest \
-                -t ${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD) \
-                    -f "../../source-code/frontend/"
-  list_and_scan_images:
-    runs-on: self-hosted
-      needs: [image-build]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      - name: List Docker images
-        run: |
-          docker images
-      - name: scan images
-        run : |
-            trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)
+            docker build -f FE-Dockerfile \
+                -t ${{ secrets.DOCKER_USERNAME }}/frontend:stablelatest \
+                  -t ${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD) \
+                      ../../source-code/frontend/
+                    
   push_images:
     runs-on: self-hosted
     needs: [list_and_scan_images]
@@ -52,4 +41,18 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD)
+
+  list_and_scan_images:
+    runs-on: self-hosted
+    needs: [image-build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: List Docker images
+        run: |
+          docker images
+      - name: scan images
+        run : |
+            trivy image --severity HIGH,CRITICAL ${{ secrets.DOCKER_USERNAME }}/frontend:$(git rev-parse --short HEAD) >> ./frontend_scan-$(git rev-parse HEAD)-$(date +'%Y-%m-%d_%H-%M').txt
+
 
