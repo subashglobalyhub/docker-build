@@ -19,12 +19,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Copying Docker compose
+      - name: Creating docker-compose directory
         working-directory: "devops"
         run: |
             ls -al
-            docker-dir=~/docker-compose/
             mkdir -p ~/docker-compose/
+      - name: Copying Docker compose
+        working-directory: "devops"
+        run: |
             cp docker-compose.yml ~/docker-compose/
       
       - name: deploying-comtainer
