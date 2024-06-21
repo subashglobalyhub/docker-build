@@ -38,6 +38,7 @@ jobs:
         uses: actions/checkout@v3
       
       - name: displaying Access content
+        working-directory: "devops/scripts"
         run: |
           chmod +x display-deploy.sh
           ./display-deploy.sh
