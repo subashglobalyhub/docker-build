@@ -1,0 +1,32 @@
+# Simple workflow for reference
+name: Deploy container
+
+on: 
+  workflow_run:
+    workflows: ['list_and_scan_images']
+    types:
+      - completed
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+jobs:
+  deploy_images:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Copying Docker compose
+        working-directory: "devops"
+        run: |
+            ls -al
+            mkdir -p ~/docker-compose/
+            cp . ~/docker-compose/
+      
+      - name: deploying-comtainer
+        run: |
+            cd ~/docker-compose/
+            docker compose up -d
