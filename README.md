@@ -7,17 +7,28 @@
  
 # Repo-description
 
-A brief description of what this project does and who it's for
+It a repository where frontend source code are stored which are developed in react.
 
 ## Project Description
 
 - Light/dark mode toggle
-- Live previews
-- Fullscreen mode
-- Cross platform
+- Adding-todo tasks
+
 
 ## Init and Setup
+To run this pipeline after saving all changes are perfomed at develop branch follow the following process 
+```
+git add .
+git commit -m "commit message"
+git push origin develop
+```
+![alt text](screenshots/template-image/T1-0-adding-pushing-code.png)
+```
 
+```
+
+**Verify pipeline status**:
+![alt text](screenshots/template-image/T1-1.0-viewing-pipeline.png)
 
 
 
