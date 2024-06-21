@@ -1,17 +1,11 @@
-# Stage 1: Build Stage
-FROM node:20-alpine as build
-WORKDIR /frontend
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
-COPY . .
-RUN yarn build
-
-# Stage 2: Production Stage
 FROM node:20-alpine
 WORKDIR /frontend
 
-# Copy only the built assets and necessary files from the previous stage
-COPY --from=build /frontend/package.json /frontend/yarn.lock /frontend/public/ ./
+COPY package.json  /frontend
+COPY yarn.lock /frontend
+
+RUN yarn install
+COPY . .
 
 EXPOSE 5173
-CMD ["yarn", "dev"]
+CMD ["yarn", "start"]
