@@ -41,8 +41,7 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/FE-V2-newlatest
           docker push ${{ secrets.DOCKER_USERNAME }}/FE-V2-new$(git rev-parse --short HEAD)
-        run: |
-            ls -al
+          ls -al
 
   list_and_scan_images:
     runs-on: self-hosted
