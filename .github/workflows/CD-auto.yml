@@ -2,10 +2,6 @@
 name: CD-Deploy-container
 
 on: 
-  workflow_run:
-    workflows: ['CI-build-and-push-images']
-    types:
-      - completed
   push:
     branches:
       - develop
@@ -33,3 +29,18 @@ jobs:
         run: |
             cd ~/docker-compose/
             docker compose up -d
+
+  display-result:
+    needs: [deploy_images]
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: displaying Access content
+        working-directory: "devops/scripts"
+        run: |
+          chmod +x display-deploy.sh
+          ./display-deploy.sh
+
+

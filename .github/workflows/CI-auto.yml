@@ -1,6 +1,10 @@
 name: CI-build-and-push-images
 
 on:
+  workflow_run:
+    workflows: ['CD-Deploy-container']
+    types:
+      - completed
   push:
     branches:
       - develop
@@ -24,7 +28,7 @@ jobs:
       - name: Build image
         working-directory: "devops/frontend" 
         run: |
-          docker build -f FE-Dockerfile \
+          docker build --no-cache -f FE-Dockerfile-multi-stage \
             -t ${{ secrets.DOCKER_USERNAME }}/frontend-v2:latest \
             -t ${{ secrets.DOCKER_USERNAME }}/frontend-v2:$(git rev-parse --short HEAD) \
             ../../source-code/frontend/

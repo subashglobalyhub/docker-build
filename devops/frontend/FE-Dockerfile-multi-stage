@@ -11,7 +11,8 @@ FROM node:20-alpine
 WORKDIR /frontend
 
 # Copy only the built assets and necessary files from the previous stage
-COPY --from=build /frontend/package.json /frontend/yarn.lock /frontend/public/ ./
+COPY --from=build /frontend/package.json /frontend/yarn.lock /frontend/public/ /frontend/
+RUN yarn global add vite
 
 EXPOSE 5173
 CMD ["yarn", "dev"]
